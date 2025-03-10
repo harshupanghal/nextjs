@@ -1,2 +1,2 @@
-git add . ; git commit -m "chnages made" ; git push -u origin main
+git add . ; git commit -m "changes made" ; git push -u origin main
 
