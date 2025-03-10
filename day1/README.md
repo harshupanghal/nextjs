@@ -59,6 +59,58 @@ export default async function Docs({ params }) {
 }
 ```
 
-> to make slugs optional and showing a default page for docs only : `[[...slug]]` : 
+> to make slugs optional and showing a default page for docs only : `[[...slug]]` : ` return <><h1>Docs home page</h1></>` at end of component function
 
-` return <><h1>Docs home page</h1></>` at end of component function
+### Not Found Page
+
+1. create a file in app folder named exactly like this : `not-found.js`.
+
+2. Another way is to use `notFound` function from `"next/navigation"` and trigger it on specific condition you want : 
+```javascript
+
+import { notFound } from "next/navigation";
+
+export default async function ProductReview({ params }) {
+          const {productId,reviewId} = await params;
+          if(parseFloat(reviewId)> 1000 ) {
+          notFound();
+          }
+          return <h1>Product review {reviewId} about {productId}</h1>;
+        }
+```
+
+3. One more, if you want to create a custom not found page, like for product reviews, limiting them upto 1000, create another `not-found.js` in that folder and customize it.
+
+> we can't use props in not found component , to use custom message based on route, we have to use react `usePathname` hook.
+ ```javascript
+ 'use client'
+import { usePathname } from "next/navigation"
+
+export default function NotFound() {
+          const pathname = usePathname();
+          const productId = pathname.split('/')[2];
+          const reviewId = pathname.split('/')[4];
+          return <>
+          <h2>Review {reviewId} not found for product {productId}</h2>      
+          </>
+}
+```
+
+#### File Colocation
+ A route only becomes public when it has a `page.js` or `page.tsx` file. It has to be defaulted export component by page.js
+
+#### Private Folders
+ - A way to tell Next.js that it is a internal stuff and don't include it in routing system. The folder and all its sub-folders are excluded from the routing.
+ - Just add an underscore before folder name : `_stats`.
+ - If you want to add an underscore in url, in place of underscore use : `%5F`
+
+### Route Groups 
+Logically organizing our routes without affecting the url.
+  - like there are 3 routes : login , register and forgot-password. To group them , create a new folder named auth and surround it wiht paranthese : `(auth)`.
+  -  Move all routes to this folder. This tells Nextjs to treat it as a organizational folder only.
+  -  We can nest them also
+  
+  
+## Layouts
+
+        
