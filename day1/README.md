@@ -110,7 +110,9 @@ Logically organizing our routes without affecting the url.
   -  Move all routes to this folder. This tells Nextjs to treat it as a organizational folder only.
   -  We can nest them also
   
-  
+
+---
+
 ## Layouts
 
         
