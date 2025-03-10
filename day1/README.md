@@ -39,3 +39,26 @@ export default async function ProductReview({ params }) {
           return <h1>Product review {reviewId} about {productId}</h1>;
         }
   ```
+
+### Catch All Segments
+
+inside app folder create a folder `docs` inside it create a folder `[...slug]`. inside it create create a `page.js`, when you go to any url , it will show the same page. For customization : 
+
+```javascript
+export default async function Docs({ params }) {
+  const { slug } = await params;
+  if (slug?.length === 2) {
+    return (
+      <h1>
+        docs for feature{slug[0]} and concept {slug[1]}
+      </h1>
+    );
+  } else if (slug.length === 1) {
+    return <h1>Viewing docs for feature {slug[0]}</h1>;
+  }
+}
+```
+
+> to make slugs optional and showing a default page for docs only : `[[...slug]]` : 
+
+` return <><h1>Docs home page</h1></>` at end of component function
