@@ -1,3 +1,3 @@
 export default function Blog() {
-          return <><h1>blog page</h1></>
+          return <>(No Layout)<h1>blog page</h1></>
 }

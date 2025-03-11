@@ -3,3 +3,8 @@ export default function About() {
                     <h1>this is about page</h1>
           </>
 }
+
+export const metadata = {
+          title : 'This is about page',
+          description : 'description for about page'
+};

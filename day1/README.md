@@ -1,5 +1,6 @@
 # Day 1
 
+
 ---
 
 ## Routing 
@@ -115,4 +116,58 @@ Logically organizing our routes without affecting the url.
 
 ## Layouts
 
-        
+- Pages are route-specific UI Components, but a layout is UI that is shared between multiple pages in app.
+- To create a layout, export a React component from a layout.js or layout.tsx. That component takes a children prop, which Nextjs will populate with your page content.
+- To add header and footer, i did this : created a layout folder : `_layout` and make two folders inside it  - header and footer, create their page.js. Then import them in root layout.js
+
+### Nested Layouts 
+To create custom layout for any component, like for product page, create a `layout.js` inside product folder and style it.
+
+### Multiple Root Layouts
+coming soon ..
+
+### Routing Metadata
+- The Metadat API is a powerful feature that lets us define metadata for each page.
+- Metadata ensures our content looks great when it's shared or indexede by search engines.
+- Two ways to handle metadata in layout.js files : 
+    1. export a static metadata object
+    2. export a dynamic generate metadata function.
+
+- **Rules** 
+    - Both layout and page files can export metadata. Layout metadata applies to all its pages, while page metadata is specific to that page.
+    - Metadata follows a top-down order, starting from the root level.
+    - When metadata exists in multiple places along a route, they merge together, with page metadata overriding layout metadata for matching properties. Deeper layout takes priority.
+    - Can't use both static and dynamic in same route segment.
+    - Don't work with 'use client' pages. To use in client routes, create an another componet and shift client logic there, in page.js import that component and along wiht it use the metadata
+
+- Static Metadata : 
+```javascript
+   export const metadata = {
+   title : 'This is about page',
+   description : 'description for about page'
+   };
+```
+
+
+- Dynamic Metadata : 
+```javascript
+  import {Metadata} from 'next';
+  export const generateMetadata = async({params}) => {
+  const id = (await params).productId;
+  return {
+    title : `Product ${id}`
+  }
+}
+```
+
+---
+
+### Navigation
+
+Defining routes for our application's root, nested routes, dynamic routes and catch all routes.
+
+### Link component navigation
+
+For client side navigation, Next.js gives us the `<Link>` component.
+The `<Link>` component is React component that extends `<a>` element.
+To use it, we will need to import it from `'next/link'`.

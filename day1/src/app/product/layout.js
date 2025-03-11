@@ -1,5 +1,4 @@
-import Header from "./_layout/header/page"
-import Footer from "./_layout/footer/page"
+
 
 export const metadata = {
   title: 'HARSH',
@@ -8,12 +7,10 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body>
-  <Header/>
+          <>
+    <h2>Featured products</h2>
         {children}
-        <Footer/>
-        </body>
-    </html>
+       
+          </>
   )
 }
