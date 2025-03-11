@@ -1,23 +1,18 @@
 # Day 1
 
 
----
-
 ## Routing 
-
 Next.js has a file system based routing system.
 
 URLs you can access in your browser are determined by how you orgainze your file and folders in your code.
 
 ### Routing conventions
-
 1. All routes must live inside the app folder
 2. Route files must be named either page.js or page.tsx
    
    When these conventions are followed , the file automatically becomes available as a route.
 
 ### Dynamic Routes
-
   create a folder with square brackets `[productId]`. Inside it create a page.js. Inside page.js component grab the product id using params prop to show dynamic content.
   
   eg. `page.js`
@@ -30,7 +25,6 @@ URLs you can access in your browser are determined by how you orgainze your file
 ```
 
 ### Nested Dynamic Routes
-
   create a nested folder inside [productId] name it , anything `xyz`, inside `xyz` create another folder `[reviewId]`, create a `page.js` and do this :
 
   ``` javascript
@@ -42,7 +36,6 @@ export default async function ProductReview({ params }) {
   ```
 
 ### Catch All Segments
-
 inside app folder create a folder `docs` inside it create a folder `[...slug]`. inside it create create a `page.js`, when you go to any url , it will show the same page. For customization : 
 
 ```javascript
@@ -63,7 +56,6 @@ export default async function Docs({ params }) {
 > to make slugs optional and showing a default page for docs only : `[[...slug]]` : ` return <><h1>Docs home page</h1></>` at end of component function
 
 ### Not Found Page
-
 1. create a file in app folder named exactly like this : `not-found.js`.
 
 2. Another way is to use `notFound` function from `"next/navigation"` and trigger it on specific condition you want : 
@@ -115,7 +107,6 @@ Logically organizing our routes without affecting the url.
 ---
 
 ## Layouts
-
 - Pages are route-specific UI Components, but a layout is UI that is shared between multiple pages in app.
 - To create a layout, export a React component from a layout.js or layout.tsx. That component takes a children prop, which Nextjs will populate with your page content.
 - To add header and footer, i did this : created a layout folder : `_layout` and make two folders inside it  - header and footer, create their page.js. Then import them in root layout.js
@@ -148,7 +139,6 @@ coming soon ..
    };
 ```
 
-
 - Dynamic Metadata : 
 ```javascript
   import {Metadata} from 'next';
@@ -163,11 +153,52 @@ coming soon ..
 ---
 
 ### Navigation
-
 Defining routes for our application's root, nested routes, dynamic routes and catch all routes.
 
 ### Link component navigation
-
 For client side navigation, Next.js gives us the `<Link>` component.
 The `<Link>` component is React component that extends `<a>` element.
 To use it, we will need to import it from `'next/link'`.
+
+> using `replace` keyword in `Link` tag, makes the current page to override history instead of adding a new one.
+
+#### Active Links
+Styling the Links that we are currently on. eg :
+
+```javascript
+'use client'
+
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import '../global.css'
+
+const navLinks = [
+  { name: 'Register', href: '/register' },
+  { name: ' Login ', href: '/login' },
+  { name: ' Forgot Password ', href: '/forgot-password' }
+];
+export default function AuthLayout({ children }) {
+  const pathname = usePathname();
+  return (
+    <>
+      <div>
+
+        {navLinks.map((link) => {
+          const isActive = pathname === link.href || (pathname.startsWith(link.href) && link.href !== '/')
+          return (
+            <Link className={isActive ? 'font-bold mr-4' : "text-blue-500 mr-4"} href={link.href} key={link.name}>
+              {link.name}
+            </Link>
+          );
+        })}
+      </div>
+    </>
+  );
+}
+```
+
+### Params and Search Params
+*params* is a promise that resolves to an object containing the dynamic route parameteres (like id)
+
+*search params* is a promise that resolves to an object containing the query parameters (like fikters and sorting)
+

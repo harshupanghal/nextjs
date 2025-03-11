@@ -1,5 +1,6 @@
 import Header from "./_layout/header/page"
 import Footer from "./_layout/footer/page"
+import './global.css'
 
 export const metadata = {
   title: 'HARSH',
