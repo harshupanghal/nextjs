@@ -1,42 +1,50 @@
 # Day 1
 
+## Routing
 
-## Routing 
 Next.js has a file system based routing system.
 
 URLs you can access in your browser are determined by how you orgainze your file and folders in your code.
 
 ### Routing conventions
+
 1. All routes must live inside the app folder
 2. Route files must be named either page.js or page.tsx
-   
+
    When these conventions are followed , the file automatically becomes available as a route.
 
 ### Dynamic Routes
-  create a folder with square brackets `[productId]`. Inside it create a page.js. Inside page.js component grab the product id using params prop to show dynamic content.
-  
-  eg. `page.js`
 
-  ```javascript
-  export default async function ProductDetails({ params }) {
+create a folder with square brackets `[productId]`. Inside it create a page.js. Inside page.js component grab the product id using params prop to show dynamic content.
+
+eg. `page.js`
+
+```javascript
+export default async function ProductDetails({ params }) {
   const productId = (await params).productId;
   return <h1>Product details about {productId}</h1>;
 }
 ```
 
 ### Nested Dynamic Routes
-  create a nested folder inside [productId] name it , anything `xyz`, inside `xyz` create another folder `[reviewId]`, create a `page.js` and do this :
 
-  ``` javascript
+create a nested folder inside [productId] name it , anything `xyz`, inside `xyz` create another folder `[reviewId]`, create a `page.js` and do this :
+
+```javascript
 export default async function ProductReview({ params }) {
-          const {productId,reviewId} = await params;
-          
-          return <h1>Product review {reviewId} about {productId}</h1>;
-        }
-  ```
+  const { productId, reviewId } = await params;
+
+  return (
+    <h1>
+      Product review {reviewId} about {productId}
+    </h1>
+  );
+}
+```
 
 ### Catch All Segments
-inside app folder create a folder `docs` inside it create a folder `[...slug]`. inside it create create a `page.js`, when you go to any url , it will show the same page. For customization : 
+
+inside app folder create a folder `docs` inside it create a folder `[...slug]`. inside it create create a `page.js`, when you go to any url , it will show the same page. For customization :
 
 ```javascript
 export default async function Docs({ params }) {
@@ -56,106 +64,129 @@ export default async function Docs({ params }) {
 > to make slugs optional and showing a default page for docs only : `[[...slug]]` : ` return <><h1>Docs home page</h1></>` at end of component function
 
 ### Not Found Page
+
 1. create a file in app folder named exactly like this : `not-found.js`.
 
-2. Another way is to use `notFound` function from `"next/navigation"` and trigger it on specific condition you want : 
-```javascript
+2. Another way is to use `notFound` function from `"next/navigation"` and trigger it on specific condition you want :
 
+```javascript
 import { notFound } from "next/navigation";
 
 export default async function ProductReview({ params }) {
-          const {productId,reviewId} = await params;
-          if(parseFloat(reviewId)> 1000 ) {
-          notFound();
-          }
-          return <h1>Product review {reviewId} about {productId}</h1>;
-        }
+  const { productId, reviewId } = await params;
+  if (parseFloat(reviewId) > 1000) {
+    notFound();
+  }
+  return (
+    <h1>
+      Product review {reviewId} about {productId}
+    </h1>
+  );
+}
 ```
 
 3. One more, if you want to create a custom not found page, like for product reviews, limiting them upto 1000, create another `not-found.js` in that folder and customize it.
 
 > we can't use props in not found component , to use custom message based on route, we have to use react `usePathname` hook.
- ```javascript
- 'use client'
-import { usePathname } from "next/navigation"
+
+```javascript
+"use client";
+import { usePathname } from "next/navigation";
 
 export default function NotFound() {
-          const pathname = usePathname();
-          const productId = pathname.split('/')[2];
-          const reviewId = pathname.split('/')[4];
-          return <>
-          <h2>Review {reviewId} not found for product {productId}</h2>      
-          </>
+  const pathname = usePathname();
+  const productId = pathname.split("/")[2];
+  const reviewId = pathname.split("/")[4];
+  return (
+    <>
+      <h2>
+        Review {reviewId} not found for product {productId}
+      </h2>
+    </>
+  );
 }
 ```
 
 #### File Colocation
- A route only becomes public when it has a `page.js` or `page.tsx` file. It has to be defaulted export component by page.js
+
+A route only becomes public when it has a `page.js` or `page.tsx` file. It has to be defaulted export component by page.js
 
 #### Private Folders
- - A way to tell Next.js that it is a internal stuff and don't include it in routing system. The folder and all its sub-folders are excluded from the routing.
- - Just add an underscore before folder name : `_stats`.
- - If you want to add an underscore in url, in place of underscore use : `%5F`
 
-### Route Groups 
+- A way to tell Next.js that it is a internal stuff and don't include it in routing system. The folder and all its sub-folders are excluded from the routing.
+- Just add an underscore before folder name : `_stats`.
+- If you want to add an underscore in url, in place of underscore use : `%5F`
+
+### Route Groups
+
 Logically organizing our routes without affecting the url.
-  - like there are 3 routes : login , register and forgot-password. To group them , create a new folder named auth and surround it wiht paranthese : `(auth)`.
-  -  Move all routes to this folder. This tells Nextjs to treat it as a organizational folder only.
-  -  We can nest them also
-  
+
+- like there are 3 routes : login , register and forgot-password. To group them , create a new folder named auth and surround it wiht paranthese : `(auth)`.
+- Move all routes to this folder. This tells Nextjs to treat it as a organizational folder only.
+- We can nest them also
 
 ---
 
 ## Layouts
+
 - Pages are route-specific UI Components, but a layout is UI that is shared between multiple pages in app.
 - To create a layout, export a React component from a layout.js or layout.tsx. That component takes a children prop, which Nextjs will populate with your page content.
-- To add header and footer, i did this : created a layout folder : `_layout` and make two folders inside it  - header and footer, create their page.js. Then import them in root layout.js
+- To add header and footer, i did this : created a layout folder : `_layout` and make two folders inside it - header and footer, create their page.js. Then import them in root layout.js
 
-### Nested Layouts 
+### Nested Layouts
+
 To create custom layout for any component, like for product page, create a `layout.js` inside product folder and style it.
 
 ### Multiple Root Layouts
+
 coming soon ..
 
 ### Routing Metadata
+
 - The Metadat API is a powerful feature that lets us define metadata for each page.
 - Metadata ensures our content looks great when it's shared or indexede by search engines.
-- Two ways to handle metadata in layout.js files : 
-    1. export a static metadata object
-    2. export a dynamic generate metadata function.
+- Two ways to handle metadata in layout.js files :
 
-- **Rules** 
-    - Both layout and page files can export metadata. Layout metadata applies to all its pages, while page metadata is specific to that page.
-    - Metadata follows a top-down order, starting from the root level.
-    - When metadata exists in multiple places along a route, they merge together, with page metadata overriding layout metadata for matching properties. Deeper layout takes priority.
-    - Can't use both static and dynamic in same route segment.
-    - Don't work with 'use client' pages. To use in client routes, create an another componet and shift client logic there, in page.js import that component and along wiht it use the metadata
+  1. export a static metadata object
+  2. export a dynamic generate metadata function.
 
-- Static Metadata : 
+- **Rules**
+
+  - Both layout and page files can export metadata. Layout metadata applies to all its pages, while page metadata is specific to that page.
+  - Metadata follows a top-down order, starting from the root level.
+  - When metadata exists in multiple places along a route, they merge together, with page metadata overriding layout metadata for matching properties. Deeper layout takes priority.
+  - Can't use both static and dynamic in same route segment.
+  - Don't work with 'use client' pages. To use in client routes, create an another componet and shift client logic there, in page.js import that component and along wiht it use the metadata
+
+- Static Metadata :
+
 ```javascript
-   export const metadata = {
-   title : 'This is about page',
-   description : 'description for about page'
-   };
+export const metadata = {
+  title: "This is about page",
+  description: "description for about page",
+};
 ```
 
-- Dynamic Metadata : 
+- Dynamic Metadata :
+
 ```javascript
-  import {Metadata} from 'next';
-  export const generateMetadata = async({params}) => {
+import { Metadata } from "next";
+export const generateMetadata = async ({ params }) => {
   const id = (await params).productId;
   return {
-    title : `Product ${id}`
-  }
-}
+    title: `Product ${id}`,
+  };
+};
 ```
 
 ---
 
 ### Navigation
+
 Defining routes for our application's root, nested routes, dynamic routes and catch all routes.
 
 ### Link component navigation
+
 For client side navigation, Next.js gives us the `<Link>` component.
 The `<Link>` component is React component that extends `<a>` element.
 To use it, we will need to import it from `'next/link'`.
@@ -163,30 +194,36 @@ To use it, we will need to import it from `'next/link'`.
 > using `replace` keyword in `Link` tag, makes the current page to override history instead of adding a new one.
 
 #### Active Links
+
 Styling the Links that we are currently on. eg :
 
 ```javascript
-'use client'
+"use client";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import '../global.css'
+import "../global.css";
 
 const navLinks = [
-  { name: 'Register', href: '/register' },
-  { name: ' Login ', href: '/login' },
-  { name: ' Forgot Password ', href: '/forgot-password' }
+  { name: "Register", href: "/register" },
+  { name: " Login ", href: "/login" },
+  { name: " Forgot Password ", href: "/forgot-password" },
 ];
 export default function AuthLayout({ children }) {
   const pathname = usePathname();
   return (
     <>
       <div>
-
         {navLinks.map((link) => {
-          const isActive = pathname === link.href || (pathname.startsWith(link.href) && link.href !== '/')
+          const isActive =
+            pathname === link.href ||
+            (pathname.startsWith(link.href) && link.href !== "/");
           return (
-            <Link className={isActive ? 'font-bold mr-4' : "text-blue-500 mr-4"} href={link.href} key={link.name}>
+            <Link
+              className={isActive ? "font-bold mr-4" : "text-blue-500 mr-4"}
+              href={link.href}
+              key={link.name}
+            >
               {link.name}
             </Link>
           );
@@ -198,7 +235,30 @@ export default function AuthLayout({ children }) {
 ```
 
 ### Params and Search Params
-*params* is a promise that resolves to an object containing the dynamic route parameteres (like id)
 
-*search params* is a promise that resolves to an object containing the query parameters (like fikters and sorting)
+_params_ is a promise that resolves to an object containing the dynamic route parameteres (like id)
 
+_search params_ is a promise that resolves to an object containing the query parameters (like fikters and sorting)
+
+while page.js has access to both params and search params, layout.js only has access to params.
+
+using them :
+
+1. using async await, works only in server component
+
+   ```javascript
+   export default async function NewArticles(params, searchParams) {
+
+         const {articleId} = await params;
+         const {lang='en'} = await searchParams;
+   ```
+
+2. using `use` hook, works only in client component
+   ```javascript
+   "use client";
+   import { use } from "react";
+   export default function NewArticles(params, searchParams) {
+   const {articleId} = use(params);
+   const {lang='en'} = use(searchParams);
+   }  
+   ```
