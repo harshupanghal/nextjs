@@ -262,3 +262,49 @@ using them :
    const {lang='en'} = use(searchParams);
    }  
    ```
+
+### Navigating Programatically
+There are some situations where we have to navigate through pages based on some actions and operations done by the user, like while on a ecommerce website when we have to navigate user toa page after succcessful completion of payment, we use navigation.
+
+  - we can use `useRouter` hook to navigate user to other page, make it client component firstly. Then we can different methods, provided by router, like push, forward, backwards etc. Also we can navigate to dynamic routes, catch all routes etc.:
+    ```javascript
+    'use client'
+     import { useRouter,redirect } from "next/navigation"
+
+     export default function OrderProduct() {
+          const router = useRouter();
+          const handleClick = () => {
+                    console.log("placing your order")
+                    setTimeout(() => {
+                     // router.push('/');    // -- using router
+                        redirect('/')       //  -- using redirect
+                    }, 3000);
+          }
+
+        return (
+          <>
+         <h1> product lazeez</h1>
+         <button onClick={handleClick} className="m-2 p-2 rounded-xl bg-amber-900">buy now</button>
+          </>
+          )
+      }
+      ```
+  - we can also use `redirect` from navigation to redirect to a page on conditions.:
+      ```javascript
+
+### Templates
+  > Suppose we have a common *layout file* in a folder and that is shared across many folders, when we navigate between those routes, only the new page content will be mounted , *the common elements will be kept intact*, such as the state.
+
+  Sometime we don't want this functionality in our app, like we want to use some hooks or some animatons on enter and exit, layout will not provide this functionality so we have to use templates.
+
+ - Templates are similar tolayouts in that they are also shared UI between multiple pages in your app. Whenevr a user navigates between routes sharing a template, you get a completely freh start.
+     - a new template component instance is mounted
+     - DOM elements are recreated
+     - state is cleared
+     - effects are re-synchronized
+
+Steps To Create a Template File : 
+1. Create a `template.js` or `template.tsx` file and export a default React component from it.
+2. Like layouts, templates need to accept a children prop to render the nested route segments.
+
+- We can use both layout and template together. First layout will render and its children will be replaced by template components output.

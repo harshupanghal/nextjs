@@ -5,8 +5,8 @@ import { use } from "react";
 import '../../global.css';
 export default  function NewArticles(params, searchParams) {
 
-          const {articleId} =  use(params);
-          const {lang='en'} =  use(searchParams);
+          // const {articleId} =  use(params);
+          // const {lang='en'} =  use(searchParams);
 
 
           return (
