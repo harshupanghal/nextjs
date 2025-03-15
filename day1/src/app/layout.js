@@ -1,6 +1,8 @@
 import Header from "./_layout/header/page"
 import Footer from "./_layout/footer/page"
 import './global.css'
+import { ErrorWrapper } from "./error-wrapper"
+
 
 export const metadata = {
   title: 'HARSH',
@@ -12,7 +14,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body>
   <Header/>
-        {children}
+  <ErrorWrapper>  {children} </ErrorWrapper>
         <Footer/>
         </body>
     </html>

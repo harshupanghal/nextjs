@@ -2,7 +2,11 @@
 
 body{
           background-color:black ;
-          color: whitesmoke;
-          padding: 2.5rem;
+          color: #f5f5f5;
+          width: 100%;
+          height: fit-content;
+          padding: auto;
+          margin: auto;
+         
 }
 

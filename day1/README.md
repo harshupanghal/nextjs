@@ -308,3 +308,91 @@ Steps To Create a Template File :
 2. Like layouts, templates need to accept a children prop to render the nested route segments.
 
 - We can use both layout and template together. First layout will render and its children will be replaced by template components output.
+
+### Loading UI
+
+  `loading.js`
+  This file helps us create loading states that users see while waiting for content to load in specific route segement. It appears instantly when navigating, letting users know that the application is responsive and actively loading content.
+  - users can still use navigation menus or sidebars even if the main content is not ready 
+
+### Error Handling
+    To handle errors and to display some message on error occurence, to do this just simply create a `error.js` in the folder component where you want.
+    Customize it as per your choice.
+
+  > error boundary must be client component.
+  - it automatically wraps route segments and their nested children in a React Error Boundary.
+  - We can create custom Error Uis for specific segments using the file-system hierarchy.
+  - Enable to attempt to recover from an error without requiring a full page reload.
+
+  ![Component Hierarchy](./public/image.png)
+
+  - To recover from an error, we have a `reset` function:
+   ```js
+  "use client";
+  import { useRouter } from "next/navigation";
+  import { startTransition } from "react";
+  export default function ErrorBoundary({ error, reset }) {
+          const router = useRouter();
+          const reload = ()=>{
+                    startTransition(()=>{
+                              router.refresh();
+                              reset();
+                    })
+          }
+   ```
+
+#### Handling errors in nested routes
+  - Errors always bubble up to find the closest parent error boundary
+  - An error.js file handles errors not just for its own folder, but for all the nested child segments below it too
+  - BY strategically placing error.js files at different levels in your route folders, you can control exactly how detailed your error handling gets
+  - Where you put your error.js file, makes a huge difference - it determines exactly which parts of your UI get affected when things go wrong.
+
+#### Handling errors in layouts
+  - The error boundary won't catch errors thrown in Layout.js within the same segment because of how compponent hierarchy works,
+  - The layout actually sits above the error boundary in the component tree.
+  
+  eg.: product-> parent component
+       [productId] -> child component
+
+  *if both `layout.js` and `error.js` are in child component folder it will not catch error and `Unhandled Runtime error` will be encountered. To make this work properly, move the `error.js upto parent component.*
+
+#### Handling Global Errors
+- if an error boundary can't catch errors in the layout.js file from same segment? For these we have a special file called `global-error.js` that goes in your root app directory.
+- This is last line of defense when something goes catasphorically wrong at the highest level of your app.
+  - works only in production mode
+  - requires html and body tags to be rendered. Try to write html and css only , here.
+
+### Parallel Routes
+It is a way to render multiple pages simultaneously within the same layout.
+
+- Parallel routes are defined using a feature known as **slots**, that helps organize content in a modular  way.
+- To create a slot, we use `@folder` naming convention.
+- Each defined slot automatically becomes a prop in its corresponding `layout.js` file.
+
+***Use Cases***
+- Dashboards with mutiple sections.
+- Split-view interfaces.
+- MUlti-pane layouts
+- Complex admin interfaces
+
+#### Unmatched Routes
+
+- **Navigating from the UI** 
+    When navigating through the UI (like clicking links), Next.js keeps showing whatever was in the unmatched slots before.
+- **Page Reload**
+    Next.js looks for a `default.js` file in each unmatched slot. This file is critical as it serves as a fallback to render content when the framework cannot retrieve a slot's active state from the current URL.
+    Without the file, we get a 404 error
+
+#### Conditional Routes
+  - Imagine we want to show different content based in  whether the user has signed in or not.
+  - You might want to display a dashboard for authenticated users but show a login page for those who aren't 
+  -  Conditional routes allows us to achieve this while maintaining completely seperate code on the same URL.    
+  
+ #### Intercepting Routes
+ - It allows to load a route from another part of your application within the current layout.
+ - It's particularly useful when you want to display new content while keeping your user in the same context.
+
+  ***Conventions***
+  - `(.)` to match segments on the same level, prefix to folder name.
+  - `(..)` to match segments one level above. 
+
