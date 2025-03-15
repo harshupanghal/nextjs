@@ -181,7 +181,7 @@ export const generateMetadata = async ({ params }) => {
 
 ---
 
-### Navigation
+## Navigation
 
 Defining routes for our application's root, nested routes, dynamic routes and catch all routes.
 
@@ -341,13 +341,13 @@ Steps To Create a Template File :
           }
    ```
 
-#### Handling errors in nested routes
+### Handling errors in nested routes
   - Errors always bubble up to find the closest parent error boundary
   - An error.js file handles errors not just for its own folder, but for all the nested child segments below it too
   - BY strategically placing error.js files at different levels in your route folders, you can control exactly how detailed your error handling gets
   - Where you put your error.js file, makes a huge difference - it determines exactly which parts of your UI get affected when things go wrong.
 
-#### Handling errors in layouts
+### Handling errors in layouts
   - The error boundary won't catch errors thrown in Layout.js within the same segment because of how compponent hierarchy works,
   - The layout actually sits above the error boundary in the component tree.
   
@@ -356,7 +356,7 @@ Steps To Create a Template File :
 
   *if both `layout.js` and `error.js` are in child component folder it will not catch error and `Unhandled Runtime error` will be encountered. To make this work properly, move the `error.js upto parent component.*
 
-#### Handling Global Errors
+### Handling Global Errors
 - if an error boundary can't catch errors in the layout.js file from same segment? For these we have a special file called `global-error.js` that goes in your root app directory.
 - This is last line of defense when something goes catasphorically wrong at the highest level of your app.
   - works only in production mode
@@ -395,4 +395,13 @@ It is a way to render multiple pages simultaneously within the same layout.
   ***Conventions***
   - `(.)` to match segments on the same level, prefix to folder name.
   - `(..)` to match segments one level above. 
+  - `(..)(..)` to match segments two level above. 
+  - `(...)` to match segments from root app directory.
+    - These are based on source to target , if u are in f1 folder, making a interceted f2 folder, we use (.) if f2 main folder is in  same directory.
+
+> We can use Parallel and Intercepting route together.
+
+
+
+
 
