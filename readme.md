@@ -1,10 +1,3 @@
-# Markdown Crash Course
-
-**Video Course**
-
-[![Thumbnail](https://img.youtube.com/vi/ftOBvusMHjQ/maxresdefault.jpg)](https://youtu.be/ftOBvusMHjQ)
-
---- 
 
 ## Basic Syntax
 
@@ -138,9 +131,6 @@ Emoji's are fun! :joy:
 
 ### Table of Contents
 
-- [Markdown Crash Course](#markdown-crash-course)
-  - [Basic Syntax](#basic-syntax)
-    - [Headings](#headings)
 - [Heading 1](#heading-1)
   - [Heading 2](#heading-2)
     - [Heading 3](#heading-3)
