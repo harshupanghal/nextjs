@@ -36,8 +36,13 @@ export default function ProductDetailPage() {
 
 > Some packages are still dependent on client component features, to use them in a server component, create a client component with those packages and import and use those client components in server components.
 
-![ServerClient](./public/image12.png)
+![context provider](./public/image12.png)
 ![ServerClient](./public/image13.png)
+
+> To prevent the client code being exposed to client side, we use `client-only` package. To use this, just install it and import it in the file whee is your secure client logic.
+
+> Try to place client components as deep as possible inside a component tree. Think 'use client' as a line, when you draw it on a component, all its child components also become child component, causing to send large chunks of code to client.
+
+> when you nest a server component inside other client component, it won'twork becuase when we do this, the sever component becomes a client component. To make this work, we have to pass the server component as a prop/children to client component, instead of calling and placing it, we have to wrap it around a client component.
+
 ![ServerClient](./public/image14.png)
-![ServerClient](./public/image15.png)
-![ServerClient](./public/image16.png)
