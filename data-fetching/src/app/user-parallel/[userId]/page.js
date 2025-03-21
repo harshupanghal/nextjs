@@ -1,19 +1,9 @@
-![Client Data Fetching](./public/image1.png)
-![Server Data Fetching](./public/image2.png)
-
-> you should really only use client components for data fetching when you absolutely need it like , real time updates or data depends on client side interactions that you can't predict on server side, else use server side data fetching.
-
-![Request Memoization](./public/image3.png)
-![Tyes of Data Fetching](./public/image4.png)
-
-> The key to parallel data fetching is initiating the requests before awaiting any of them. Useful when there are too many requests and they don't depend on each other. eg:
-
-```js
 async function getUserPosts(userId) {
   await new Promise((resolve) => setTimeout(resolve, 1000));
   const res = await fetch(
     `https://jsonplaceholder.typicode.com/posts?userId=${userId}`
   );
+ 
   return res.json();
 }
 
@@ -22,6 +12,7 @@ async function getUserAlbums(userId) {
   const res = await fetch(
     `https://jsonplaceholder.typicode.com/albums?userId=${userId}`
   );
+  
   return res.json();
 }
 
@@ -66,4 +57,3 @@ export default async function Page({ params }) {
     </div>
   );
 }
-```
